@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f5">
+    <title>Scankwentory — Inventory management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>  
+    <section class="auth-screen" id="auth-screen" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <a class="brand auth-brand" href="#" aria-label="Scankwentory">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M5 10.5 16 5l11 5.5v11L16 27 5 21.5v-11Z" stroke="currentColor" stroke-width="2"/><path d="m5.5 10.7 10.5 5.5 10.5-5.5M16 16.5V27M10.5 8l11 5.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="brand-copy"><strong>Scankwentory</strong><small>INVENTORY, IN ORDER</small></span>
+        </a>
+        <div class="auth-eyebrow"><span class="eyebrow-line"></span> YOUR INVENTORY WORKSPACE</div>
+        <h1 id="auth-title">Welcome back<span>.</span></h1>
+        <p class="auth-subtitle" id="auth-subtitle">Sign in to manage your inventory.</p>
+        <form id="auth-form">
+          <label class="field auth-name-field hidden" id="auth-name-field">Your name
+            <input id="auth-name" name="name" type="text" autocomplete="name" maxlength="60" placeholder="e.g. Alex Rivera">
+          </label>
+          <label class="field">Email address
+            <input id="auth-email" name="email" type="email" autocomplete="username" required placeholder="you@example.com">
+          </label>
+          <label class="field">Password
+            <span class="password-input">
+              <input id="auth-password" name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters">
+              <button class="password-toggle" id="auth-password-toggle" type="button" aria-controls="auth-password" aria-label="Show password" aria-pressed="false">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path class="password-eye-shape" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Zm7-3a3 3 0 1 0 6 6 3 3 0 0 0-6-6Z"/></svg>
+              </button>
+            </span>
+          </label>
+          <p class="form-error hidden" id="auth-error" role="alert"></p>
+          <button class="button button-primary auth-submit" id="auth-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch"><span id="auth-switch-prompt">New to Scankwentory?</span> <button id="auth-switch-button" type="button">Create an account</button></p>
+        <p class="auth-security-note"><span aria-hidden="true">ⓘ</span> Accounts are stored in this browser and share its inventory. This is not a server-backed security system.</p>
+      </div>
+      <span class="auth-footer">Simple tools for a well-stocked business.</span>
+    </section>
+
+    <div class="app-shell hidden" id="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="landing.html" aria-label="Scankwentory home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M5 10.5 16 5l11 5.5v11L16 27 5 21.5v-11Z" stroke="currentColor" stroke-width="2"/><path d="m5.5 10.7 10.5 5.5 10.5-5.5M16 16.5V27M10.5 8l11 5.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="brand-copy"><strong>Scankwentory</strong><small>INVENTORY, IN ORDER</small></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="nav-list">
+          <a class="nav-link" href="#overview" data-view="overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>
+            Overview
+          </a>
+          <a class="nav-link active" href="#pos" data-view="pos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM8 9h8M8 13h3m3 0h2M8 16h3m3 0h2"/></svg>
+            Point of sale
+          </a>
+          <a class="nav-link" href="#products" data-view="products">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
+            Products <span class="nav-count" id="nav-product-count">0</span>
+          </a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <span class="help-icon">✳</span>
+            <strong>Keep your stock in sync</strong>
+            <p>Your inventory is saved on this device, so you can pick up right where you left off.</p>
+          </div>
+          <div class="profile">
+            <div class="avatar">S</div>
+            <div class="profile-copy"><strong id="profile-name">Store manager</strong><span id="profile-email">Local workspace</span></div>
+            <button class="logout-button" type="button" id="logout-button" aria-label="Log out" title="Log out">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5m5 5H3m9-9h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+              <span>Log out</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div>
+          <div class="topbar-right">
+            <span class="date-label" id="today-label"></span>
+            <span class="status-indicator"><i></i> All changes saved</span>
+          </div>
+        </header>
+
+        <section class="page-view hidden" id="overview-view">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> YOUR INVENTORY AT A GLANCE</div>
+              <h1>Good morning, <span>let’s take stock.</span></h1>
+              <p class="page-subtitle">Here’s what’s happening with your products today.</p>
+            </div>
+            <button class="button button-primary" type="button" data-open-product>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Add product
+            </button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Total products</span><span class="stat-icon green"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg></span></div>
+              <div class="stat-value" id="total-products">0</div>
+              <div class="stat-foot"><span class="stat-dot"></span> Unique items in your catalog</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Units in stock</span><span class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7"/></svg></span></div>
+              <div class="stat-value" id="total-units">0</div>
+              <div class="stat-foot"><span class="stat-dot blue-dot"></span> Across all products</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Inventory value</span><span class="stat-icon purple"><svg viewBox="0 0 24 24"><path d="M12 2v20m5-16H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span></div>
+              <div class="stat-value" id="inventory-value">₱0.00</div>
+              <div class="stat-foot"><span class="stat-dot purple-dot"></span> Based on current unit cost</div>
+            </article>
+            <article class="stat-card alert-stat">
+              <div class="stat-top"><span class="stat-label">Needs attention</span><span class="stat-icon amber"><svg viewBox="0 0 24 24"><path d="M10.3 4.3 2.7 17.5A1.7 1.7 0 0 0 4.2 20h15.6a1.7 1.7 0 0 0 1.5-2.5L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 3h.01"/></svg></span></div>
+              <div class="stat-value" id="low-stock-count">0</div>
+              <div class="stat-foot"><span class="stat-dot amber-dot"></span> Products at or below reorder level</div>
+            </article>
+          </div>
+
+          <section class="panel attention-panel">
+            <div class="panel-heading">
+              <div><div class="section-kicker">STAY AHEAD</div><h2>Needs your attention <span class="heading-count" id="attention-badge">0</span></h2></div>
+              <button class="text-button" type="button" data-show-low-stock>View all low stock <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="low-stock-list" id="low-stock-list"></div>
+          </section>
+
+          <section class="panel recent-panel">
+            <div class="panel-heading recent-heading">
+              <div><div class="section-kicker">THE CATALOG</div><h2>Recently added <span class="heading-caption">Your latest products</span></h2></div>
+              <button class="text-button" type="button" data-view-products>View all products <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY</th><th>UNIT COST</th><th>IN STOCK</th><th>STATUS</th></tr></thead>
+                <tbody id="recent-products"></tbody>
+              </table>
+            </div>
+          </section>
+          <footer class="page-footer"><span>Scankwentory <span id="footer-year"></span></span><span>Simple tools for a well-stocked business.</span></footer>
+        </section>
+
+        <section class="page-view products-view hidden" id="products-view">
+          <div class="page-heading products-heading">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PRODUCT CATALOG</div>
+              <h1>All <span>products.</span></h1>
+              <p class="page-subtitle">Manage your catalog, monitor stock, and keep everything moving.</p>
+            </div>
+            <button class="button button-primary" type="button" data-open-product>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Add product
+            </button>
+          </div>
+          <section class="panel catalog-panel">
+            <div class="catalog-toolbar">
+              <div><h2>Product catalog <span class="heading-count" id="catalog-count">0</span></h2><p>All your products in one place.</p></div>
+              <div class="toolbar-actions">
+                <label class="search-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+                  <input type="search" id="product-search" placeholder="Search products..." aria-label="Search products">
+                  <kbd>/</kbd>
+                </label>
+                <select class="filter-select" id="category-filter" aria-label="Filter products"><option value="">All products</option></select>
+                <button class="button button-outline" type="button" id="export-button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg>
+                  Export
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap catalog-table-wrap">
+              <table>
+                <thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY</th><th>UNIT COST</th><th>IN STOCK</th><th>STATUS</th><th><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody id="catalog-products"></tbody>
+              </table>
+              <div class="empty-state hidden" id="empty-state">
+                <span class="empty-icon"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg></span>
+                <h3 id="empty-title">Your catalog is ready</h3>
+                <p id="empty-message">Add your first product to start tracking your inventory.</p>
+                <button class="button button-primary" type="button" data-open-product>Add your first product</button>
+              </div>
+            </div>
+            <div class="catalog-footer"><span id="catalog-summary">Showing 0 products</span><span>Stock data is saved on this device</span></div>
+          </section>
+          <footer class="page-footer"><span>Scankwentory <span id="footer-year-products"></span></span><span>Simple tools for a well-stocked business.</span></footer>
+        </section>
+
+        <section class="page-view pos-view" id="pos-view">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> CHECKOUT</div>
+              <h1>Point <span>of sale.</span></h1>
+              <p class="page-subtitle">Add products to the cart, take payment, and update stock.</p>
+            </div>
+          </div>
+          <div class="pos-layout">
+            <section class="panel pos-products-panel" aria-labelledby="pos-products-title">
+              <div class="catalog-toolbar pos-toolbar">
+                <div><h2 id="pos-products-title">Choose products</h2><p id="pos-product-count">0 available</p></div>
+                <label class="search-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+                  <input type="search" id="pos-search" placeholder="Search name or SKU..." aria-label="Search products for sale">
+                </label>
+              </div>
+              <div class="pos-product-grid" id="pos-product-grid"></div>
+              <div class="pos-empty hidden" id="pos-empty">No in-stock products match your search.</div>
+            </section>
+            <section class="panel pos-cart-panel" aria-labelledby="pos-cart-title">
+              <div class="panel-heading">
+                <div><div class="section-kicker">CURRENT SALE</div><h2 id="pos-cart-title">Cart <span class="heading-count" id="pos-cart-count">0</span></h2></div>
+                <button class="text-button" id="pos-clear-cart" type="button">Clear</button>
+              </div>
+              <div class="pos-cart-items" id="pos-cart-items"></div>
+              <div class="pos-checkout">
+                <div class="pos-total-row"><span>Subtotal</span><strong id="pos-subtotal">₱0.00</strong></div>
+                <div class="pos-total-row pos-grand-total"><span>Total</span><strong id="pos-total">₱0.00</strong></div>
+                <label class="field pos-payment-field">Cash received
+                  <div class="input-prefix"><span>₱</span><input id="pos-cash" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+                </label>
+                <div class="pos-total-row pos-change-row"><span>Change</span><strong id="pos-change">₱0.00</strong></div>
+                <button class="button button-primary pos-checkout-button" id="pos-checkout" type="button" disabled>Complete sale</button>
+                <p class="pos-payment-error hidden" id="pos-payment-error" role="alert"></p>
+              </div>
+            </section>
+          </div>
+          <section class="panel pos-sales-panel">
+            <div class="panel-heading"><div><div class="section-kicker">RECENT ACTIVITY</div><h2>Recent sales</h2></div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>TIME</th><th>ITEMS</th><th>TOTAL</th><th>CASH</th><th>CHANGE</th></tr></thead>
+                <tbody id="pos-sales-history"></tbody>
+              </table>
+            </div>
+          </section>
+          <footer class="page-footer"><span>Scankwentory <span id="footer-year-pos"></span></span><span>Sales and inventory are saved on this device.</span></footer>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="modal" id="product-dialog" aria-labelledby="product-dialog-title">
+      <form id="product-form">
+        <div class="modal-header">
+          <div><span class="section-kicker">PRODUCT DETAILS</span><h2 id="product-dialog-title">Add a product</h2><p>Keep your catalog organized and up to date.</p></div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Close">×</button>
+        </div>
+        <input type="hidden" id="product-id">
+        <div class="form-grid">
+          <label class="field full-field">Product name <span class="required">*</span><input id="product-name" name="name" type="text" placeholder="e.g. Everyday Ceramic Mug" maxlength="80" required></label>
+          <label class="field">SKU <span class="required">*</span><input id="product-sku" name="sku" type="text" placeholder="e.g. MUG-001" maxlength="32" required></label>
+          <label class="field">Category <span class="required">*</span><input id="product-category" name="category" type="text" placeholder="e.g. Home &amp; living" maxlength="40" required></label>
+          <label class="field">Unit cost (PHP) <span class="required">*</span><div class="input-prefix"><span>₱</span><input id="product-price" name="price" type="number" min="0" step="0.01" placeholder="0.00" required></div></label>
+          <label class="field">Quantity in stock <span class="required">*</span><input id="product-quantity" name="quantity" type="number" min="0" step="1" placeholder="0" required></label>
+          <label class="field">Reorder level<input id="product-reorder" name="reorderLevel" type="number" min="0" step="1" placeholder="5"></label>
+          <label class="field">Storage location<input id="product-location" name="location" type="text" maxlength="40" placeholder="e.g. Shelf A3"></label>
+        </div>
+        <p class="form-error hidden" id="product-error" role="alert"></p>
+        <div class="modal-footer"><button class="button button-outline" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit" id="product-submit">Save product <span aria-hidden="true">→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog class="modal stock-modal" id="stock-dialog" aria-labelledby="stock-dialog-title">
+      <form id="stock-form">
+        <div class="modal-header">
+          <div><span class="section-kicker">INVENTORY ADJUSTMENT</span><h2 id="stock-dialog-title">Add stock</h2><p id="stock-product-name"></p></div>
+          <button class="icon-button" type="button" data-close-dialog aria-label="Close">×</button>
+        </div>
+        <input type="hidden" id="stock-product-id">
+        <div class="current-stock">Current quantity <strong id="current-stock-value">0</strong></div>
+        <div class="field"><span class="field-title">Adjustment type</span>
+          <div class="segmented-control"><label><input type="radio" name="adjustment" value="add" checked><span>＋ Add stock</span></label><label><input type="radio" name="adjustment" value="remove"><span>− Sold / remove</span></label></div>
+        </div>
+        <label class="field stock-quantity-field">Quantity<input id="stock-adjustment-quantity" type="number" min="1" step="1" placeholder="Enter quantity" required></label>
+        <p class="form-error hidden" id="stock-error" role="alert"></p>
+        <div class="modal-footer"><button class="button button-outline" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Update stock <span aria-hidden="true">→</span></button></div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+      import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-analytics.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAZfWZkC-bvmYavpMrNgGKBAchC-xRrsmI",
+        authDomain: "scankwentaryo.firebaseapp.com",
+        projectId: "scankwentaryo",
+        storageBucket: "scankwentaryo.firebasestorage.app",
+        messagingSenderId: "80624840289",
+        appId: "1:80624840289:web:afcf4212b637aa659b4420",
+        measurementId: "G-J2LR0248DY"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      if (await isSupported()) {
+        getAnalytics(app);
+      }
+    </script>
+  </body>
+</html>
